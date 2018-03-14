@@ -23,7 +23,6 @@ namespace Asteroids
         void Update()
         {
             LimitVelocity();
-            RotateLeft();
         }
         void LimitVelocity()
         {
