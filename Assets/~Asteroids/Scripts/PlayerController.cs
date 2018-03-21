@@ -11,13 +11,16 @@ namespace Asteroids
     {
         public Moving movement;
         public Shooting shoot;
-
+        public float shootRate = 0.2f; // Rate of fire
+        public float shootTimer = 0.0f; // Timer before you can shoot again
 
         #region Unity Function
 
         // Update is called once per frame
         void Update()
         {
+            shootTimer += Time.deltaTime;
+
             Shoot();
             Movement();
 
@@ -29,14 +32,17 @@ namespace Asteroids
         #region Custom Functions
         void Shoot()
         {
-            // Check if space is pressed
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (shootTimer >= shootRate)
             {
-                   // Fire!
-                shoot.Fire(transform.up);
+                // Check if space is pressed
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    // Fire!
+                    shoot.Fire(transform.up);
+                    shootTimer = 0f;
+                }
             }
 
-               
         }
         void Movement()
         {

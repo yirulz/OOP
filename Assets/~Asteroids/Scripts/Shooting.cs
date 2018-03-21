@@ -8,7 +8,9 @@ namespace Asteroids
     public class Shooting : MonoBehaviour
     {
         public GameObject bulletPrefab;
-        public float bulletSpeed = 5f;
+        public float bulletSpeed = 2.0f;
+      
+
         public Transform spawnPoint;
 
         //Spawns a new bullet and fires in 'direction' when called
