@@ -6,52 +6,93 @@ namespace Asteroids
 
     public class AsteroidsSpawner : MonoBehaviour
     {
-        public GameObject[] asteroidPrefab;
-        public float spawnRate = 1.0f;
-        public float spawnRadius = 5.0f;
-        public float asteroidSpeed = 10.0f;
+        public GameObject[] prefabs;
+        public float minSpeed = 1f;
+        public float maxSpeed = 5f;
+        public float spawnDelay = 1f;
 
-        private Rigidbody2D rigid;
+        private float spawnTimer = 0f;
 
+        //Camera
+        private Bounds camBounds;
+        private float camWidth, camHeight;
 
-        void Spawn()
-        {
-            //Random a position
-            Vector3 rand = Random.insideUnitSphere * spawnRadius;
-
-            //Disable z axis when spawning
-            rand.z = 0f;
-
-            //Generate a position with rand
-            Vector3 position = transform.position + rand;
-
-            //Generate a random index into prefab array
-            int randIndex = Random.Range(0, asteroidPrefab.Length);
-
-            //Get random asteroids
-            GameObject randAsteroid = asteroidPrefab[randIndex];
-
-            //Clone random asteroids
-            GameObject clone = Instantiate(randAsteroid);
-
-            //Set clone position
-            clone.transform.position = position;
-
-        }
 
         void Start()
         {
-            //Calls a function a certain amount of times
-            InvokeRepeating("Spawn", 0, spawnRate);
-            rigid = GetComponent<Rigidbody2D>();
+            //Calculate camera bounds
+            Camera cam = Camera.main;
+            camHeight = 2f * cam.orthographicSize;
+            camWidth = camHeight * cam.aspect;
+            camBounds = new Bounds(cam.transform.position, new Vector2(camWidth, camHeight));
+
         }
 
-         void Update()
+        void Update()
         {
-            
+            //Count up the timer
+            spawnTimer += Time.deltaTime;
+            if (spawnTimer > spawnDelay)
+            {
+                //Spawn asteroids
+                Spawn();
+                spawnTimer = 0;
+                
+            }
+        }
+
+        void Spawn()
+        {
+            Vector3 randomPoint = GenerateRandomPoint();
+            int randomIndex = Random.Range(0, prefabs.Length);
+
+            GameObject asteroid = Instantiate(prefabs[randomIndex]);
+            asteroid.transform.position = randomPoint;
+
+            Vector3 randomDir = Random.onUnitSphere;
+            float randomSpeed = Random.Range(minSpeed, maxSpeed);
+
+            Rigidbody2D rigid = asteroid.GetComponent<Rigidbody2D>();
+            rigid.AddForce(randomDir * randomSpeed, ForceMode2D.Impulse);
+
+        }
+
+        public Vector3 GenerateRandomPoint()
+        {
+            Vector3 position = Vector3.zero;
+            float halfWidth = camWidth * 0.5f;
+            float halfHeight = camHeight * 0.5f;
+            //top/bottom (true)
+            if (Random.Range(0, 2) > 0)
+            {
+                position.x = Random.Range(-halfWidth, halfWidth);
+                //top (true)
+                if(Random.Range(0, 2) > 0)
+                {
+                    position.y = halfHeight;
+                }
+                else
+                {
+                    position.y = -halfHeight;
+                }
+            }
+            else // or left/right (false)
+            {
+                position.y = Random.Range(-halfHeight, halfHeight);
+                //left (true)
+                if (Random.Range(0, 2) > 0)
+                {
+                    position.y = halfWidth;
+                }
+                else // right (right)
+                {
+                    position.y = -halfWidth;
+                }
+            }
+            return position;
         }
 
 
-        
+
     }
 }
