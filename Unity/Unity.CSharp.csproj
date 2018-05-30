@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\!Globals\Scripts\KeepWithinScreen.cs" />
+    <Compile Include="Assets\~AHundredBalls\Scripts\BucketScoring.cs" />
     <Compile Include="Assets\~AHundredBalls\Scripts\BucketScript.cs" />
     <Compile Include="Assets\~AHundredBalls\Scripts\PaddleScript.cs" />
     <Compile Include="Assets\~AHundredBalls\Scripts\SpawnerScript.cs" />
