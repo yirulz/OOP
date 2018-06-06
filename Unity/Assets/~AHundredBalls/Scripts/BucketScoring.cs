@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class BucketScoring : MonoBehaviour
 {
-    public int score;
+    public static int score = 0;
     public Text scoreText;
 
     void Start()
@@ -23,5 +23,5 @@ public class BucketScoring : MonoBehaviour
         Destroy(col.gameObject);
         score++;
     }
-   
+
 }
