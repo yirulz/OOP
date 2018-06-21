@@ -9,7 +9,14 @@ public class SpawnerScript : MonoBehaviour
     public float spawnRadius = 5.0f;
     public float spawnRate = 1.0f;
     private float spawnFactor = 0.0f;
+    public Renderer rend;
 
+    public Material red, blue, green;
+
+    void Start()
+    {
+        
+    }
     void Update()
     {
         HandleSpawn();
@@ -31,6 +38,10 @@ public class SpawnerScript : MonoBehaviour
     void Spawn(GameObject _object)
     {
         GameObject newObject = Instantiate(_object);
+        rend = newObject.GetComponent<Renderer>();
+
+        rend.material.SetColor("Red", Color.red);
+
         Vector3 randomPoint = Random.insideUnitCircle * spawnRadius;
         newObject.transform.position = transform.position + randomPoint;
     }
